@@ -109,7 +109,7 @@ presence_penalty: 数字介于-2.0和2.0之间。正值根据新标记到目前�
 请求方式：POST
 
 接口请求示例请求查看：[openai-api接口示例](https://console-docs.apipost.cn/preview/ecd1aadcde480947/04916b4df98a432b)
-[!openai-api-接口请求示例](/screenshots/openai-api-demo.jpg)
+![openai-api-接口请求示例](/screenshots/openai-api-demo.jpg)
 
 ### 有疑问请添加微信（备注: openai-api），不定期通过解答
 
