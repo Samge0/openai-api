@@ -4,9 +4,11 @@ import (
 	"github.com/gin-gonic/gin"
 	gogpt "github.com/sashabaranov/go-gpt3"
 	"net/http"
+	"openai-api/app/utils"
 	"openai-api/config"
 	"openai-api/pkg/logger"
 	"strings"
+	"time"
 )
 
 // ChatController 首页控制器
@@ -25,6 +27,7 @@ type Question struct {
 
 // HandlerChat 回复
 func (c *ChatController) HandlerChat(ctx *gin.Context) {
+	defer utils.TimeCost(time.Now())
 	question := &Question{}
 	err := ctx.BindJSON(question)
 	if err != nil {
@@ -44,16 +47,21 @@ func (c *ChatController) HandlerChat(ctx *gin.Context) {
 	}
 	prompt = cnf.BotDesc + "\n" + prompt
 	logger.Info("request prompt is %s", prompt)
-	req := gogpt.CompletionRequest{
+	req := gogpt.ChatCompletionRequest{
 		Model:            cnf.Model,
 		MaxTokens:        cnf.MaxTokens,
 		TopP:             cnf.TopP,
 		FrequencyPenalty: cnf.FrequencyPenalty,
 		PresencePenalty:  cnf.PresencePenalty,
-		Prompt:           prompt,
+		Messages: []gogpt.ChatCompletionMessage{
+			{
+				Role:    "user",
+				Content: prompt,
+			},
+		},
 	}
 
-	resp, err := client.CreateCompletion(ctx, req)
+	resp, err := client.CreateChatCompletion(ctx, req)
 	if err != nil {
 		c.ResponseJson(ctx, http.StatusInternalServerError, err.Error(), nil)
 		return
@@ -64,5 +72,7 @@ func (c *ChatController) HandlerChat(ctx *gin.Context) {
 		return
 	}
 
-	c.ResponseJson(ctx, http.StatusOK, "", resp.Choices[0].Text)
+	resultText := resp.Choices[0].Message
+	logger.Info("Response resultText is %s", resultText)
+	c.ResponseJson(ctx, http.StatusOK, "", resultText)
 }

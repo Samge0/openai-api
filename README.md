@@ -80,7 +80,7 @@ $ docker run -itd --name openai-api --restart=always -v `pwd`/docker_data/config
   "port": 8080,
   "bot_desc": "以下是与AI助手的对话。助手乐于助人，富有创造力，聪明且非常友好。",
   "max_tokens": 1024,
-  "model": "text-davinci-003",
+  "model": "gpt-3.5-turbo-0301",
   "temperature": 0.9,
   "top_p": 1,
   "frequency_penalty": 0.0,

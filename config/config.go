@@ -3,6 +3,7 @@ package config
 import (
 	"encoding/json"
 	"fmt"
+	gogpt "github.com/sashabaranov/go-gpt3"
 	"log"
 	"openai-api/pkg/logger"
 	"os"
@@ -40,7 +41,7 @@ func LoadConfig() *Configuration {
 		config = &Configuration{
 			MaxTokens:        60,
 			Port:             8080,
-			Model:            "text-davinci-003",
+			Model:            gogpt.GPT3Dot5Turbo0301,
 			Temperature:      0.9,
 			TopP:             1,
 			FrequencyPenalty: 0.0,
