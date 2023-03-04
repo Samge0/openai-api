@@ -11,7 +11,7 @@ var chatController = NewChatController()
 // RegisterRoutes 注册路由
 func RegisterRoutes(router *gin.Engine) {
 	router.Use(middlewares.Cors())
-	apiRouter := router.Group("api").Use(middlewares.TokenJWTAuth())
+	apiRouter := router.Group("ai").Use(middlewares.TokenJWTAuth())
 	{
 		apiRouter.POST("/chat", chatController.HandlerChat)
 	}
