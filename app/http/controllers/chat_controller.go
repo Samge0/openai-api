@@ -40,13 +40,31 @@ func (c *ChatController) HandlerChat(ctx *gin.Context) {
 	}
 
 	cnf := config.LoadConfig()
-	client := gogpt.NewClient(cnf.ApiKey)
 	prompt := question.Prompt
 	if !strings.HasSuffix(prompt, "。") && !strings.HasSuffix(prompt, "?") && !strings.HasSuffix(prompt, "？") {
 		prompt = prompt + "。\n"
 	}
-	prompt = cnf.BotDesc + "\n" + prompt
+	if cnf.BotDesc != "" {
+		prompt = cnf.BotDesc + "\n" + prompt
+	}
 	logger.Info("request prompt is %s", prompt)
+
+	var resultText string
+	if cnf.Model == gogpt.GPT3Dot5Turbo || cnf.Model == gogpt.GPT3Dot5Turbo0301 {
+		resultText, err = c.chatWithGpt35(ctx, cnf, prompt)
+	} else {
+		resultText, err = c.chatWithGpt30(ctx, cnf, prompt)
+	}
+	if err != nil {
+		logger.Danger("request err is %s", err)
+		return
+	}
+	logger.Info("Response resultText is %s", resultText)
+	c.ResponseJson(ctx, http.StatusOK, "", resultText)
+}
+
+// chatWithGpt35 chatGpt3.5模型
+func (c *ChatController) chatWithGpt35(ctx *gin.Context, cnf *config.Configuration, prompt string) (string, error) {
 	req := gogpt.ChatCompletionRequest{
 		Model:            cnf.Model,
 		MaxTokens:        cnf.MaxTokens,
@@ -61,18 +79,45 @@ func (c *ChatController) HandlerChat(ctx *gin.Context) {
 		},
 	}
 
+	client := gogpt.NewClient(cnf.ApiKey)
 	resp, err := client.CreateChatCompletion(ctx, req)
 	if err != nil {
 		c.ResponseJson(ctx, http.StatusInternalServerError, err.Error(), nil)
-		return
+		return "", err
 	}
 
 	if len(resp.Choices) == 0 {
 		c.ResponseJson(ctx, http.StatusInternalServerError, "无结果", nil)
-		return
+		return "", err
 	}
 
-	resultText := resp.Choices[0].Message
-	logger.Info("Response resultText is %s", resultText)
-	c.ResponseJson(ctx, http.StatusOK, "", resultText)
+	resultText := resp.Choices[0].Message.Content
+	return resultText, nil
+}
+
+// chatWithGpt30 chatGpt3.0模型
+func (c *ChatController) chatWithGpt30(ctx *gin.Context, cnf *config.Configuration, prompt string) (string, error) {
+	req := gogpt.CompletionRequest{
+		Model:            cnf.Model,
+		MaxTokens:        cnf.MaxTokens,
+		TopP:             cnf.TopP,
+		FrequencyPenalty: cnf.FrequencyPenalty,
+		PresencePenalty:  cnf.PresencePenalty,
+		Prompt:           prompt,
+	}
+
+	client := gogpt.NewClient(cnf.ApiKey)
+	resp, err := client.CreateCompletion(ctx, req)
+	if err != nil {
+		c.ResponseJson(ctx, http.StatusInternalServerError, err.Error(), nil)
+		return "", err
+	}
+
+	if len(resp.Choices) == 0 {
+		c.ResponseJson(ctx, http.StatusInternalServerError, "无结果", nil)
+		return "", err
+	}
+
+	resultText := resp.Choices[0].Text
+	return resultText, nil
 }
