@@ -1,7 +1,7 @@
 package bootstarp
 
 import (
-	"openai-api/config"
+	"openai-api/app/config"
 	"openai-api/pkg/logger"
 	"strconv"
 )

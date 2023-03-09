@@ -2,7 +2,7 @@ package bootstarp
 
 import (
 	"github.com/gin-gonic/gin"
-	"openai-api/routes"
+	"openai-api/app/routes"
 	"sync"
 )
 

@@ -29,6 +29,8 @@ type Configuration struct {
 	TopP             float32 `json:"top_p"`
 	PresencePenalty  float32 `json:"presence_penalty"`
 	FrequencyPenalty float32 `json:"frequency_penalty"`
+	// 代理ip，需要http开头的格式
+	Proxy string `json:"proxy"`
 }
 
 var config *Configuration
@@ -40,12 +42,15 @@ func LoadConfig() *Configuration {
 		// 给配置赋默认值
 		config = &Configuration{
 			MaxTokens:        60,
+			AccessToken:      "",
+			AllowOrigin:      "*",
 			Port:             8080,
 			Model:            gogpt.GPT3Dot5Turbo0301,
 			Temperature:      0.9,
 			TopP:             1,
 			FrequencyPenalty: 0.0,
 			PresencePenalty:  0.6,
+			Proxy:            "",
 		}
 
 		// 判断配置文件是否存在，存在直接JSON读取
@@ -66,35 +71,31 @@ func LoadConfig() *Configuration {
 		}
 		// 有环境变量使用环境变量
 		ApiKey := os.Getenv("APIKEY")
-		AccessToken := os.Getenv("ACCESS_TOKEN")
-		AllowOrigin := os.Getenv("ALLOW_ORIGIN")
-		BotDesc := os.Getenv("BOT_DESC")
-		Model := os.Getenv("MODEL")
-		MaxTokens := os.Getenv("MAX_TOKENS")
-		Temperature := os.Getenv("TEMPREATURE")
-		TopP := os.Getenv("TOP_P")
-		FrequencyPenalty := os.Getenv("FREQ")
-		PresencePenalty := os.Getenv("PRES")
 		if ApiKey != "" {
 			config.ApiKey = ApiKey
 		}
 
-		if BotDesc != "" {
-			config.BotDesc = BotDesc
-		}
-
+		AccessToken := os.Getenv("ACCESS_TOKEN")
 		if AccessToken != "" {
 			config.AccessToken = AccessToken
 		}
 
+		AllowOrigin := os.Getenv("ALLOW_ORIGIN")
 		if AllowOrigin != "" {
 			config.AllowOrigin = AllowOrigin
 		}
 
+		BotDesc := os.Getenv("BOT_DESC")
+		if BotDesc != "" {
+			config.BotDesc = BotDesc
+		}
+
+		Model := os.Getenv("MODEL")
 		if Model != "" {
 			config.Model = Model
 		}
 
+		MaxTokens := os.Getenv("MAX_TOKENS")
 		if MaxTokens != "" {
 			max, err := strconv.Atoi(MaxTokens)
 			if err != nil {
@@ -103,6 +104,8 @@ func LoadConfig() *Configuration {
 			}
 			config.MaxTokens = max
 		}
+
+		Temperature := os.Getenv("TEMPREATURE")
 		if Temperature != "" {
 			temp, err := strconv.ParseFloat(Temperature, 64)
 			if err != nil {
@@ -111,6 +114,8 @@ func LoadConfig() *Configuration {
 			}
 			config.Temperature = temp
 		}
+
+		TopP := os.Getenv("TOP_P")
 		if TopP != "" {
 			temp, err := strconv.ParseFloat(TopP, 32)
 			if err != nil {
@@ -119,6 +124,8 @@ func LoadConfig() *Configuration {
 			}
 			config.TopP = float32(temp)
 		}
+
+		FrequencyPenalty := os.Getenv("FREQ")
 		if FrequencyPenalty != "" {
 			temp, err := strconv.ParseFloat(FrequencyPenalty, 32)
 			if err != nil {
@@ -127,6 +134,8 @@ func LoadConfig() *Configuration {
 			}
 			config.FrequencyPenalty = float32(temp)
 		}
+
+		PresencePenalty := os.Getenv("PRES")
 		if PresencePenalty != "" {
 			temp, err := strconv.ParseFloat(PresencePenalty, 32)
 			if err != nil {
@@ -136,10 +145,12 @@ func LoadConfig() *Configuration {
 			config.PresencePenalty = float32(temp)
 		}
 
+		Proxy := os.Getenv("PROXY")
+		if Proxy != "" {
+			config.Proxy = Proxy
+		}
+
 	})
-	if config.ApiKey == "" {
-		logger.Danger("config err: api key required")
-	}
 
 	return config
 }

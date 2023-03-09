@@ -3,7 +3,7 @@ package middlewares
 import (
 	"github.com/gin-gonic/gin"
 	"net/http"
-	"openai-api/config"
+	"openai-api/app/config"
 )
 
 func Cors() gin.HandlerFunc {

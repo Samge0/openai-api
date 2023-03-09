@@ -13,5 +13,7 @@ func (*BaseController) ResponseJson(ctx *gin.Context, code int, msg string, data
 		"data": data,
 		"msg":  msg,
 	})
-	ctx.Abort()
+	//if code != 200 {
+	//	ctx.Abort()
+	//}
 }

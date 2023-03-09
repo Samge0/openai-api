@@ -1,6 +1,8 @@
 package main
 
-import "openai-api/bootstarp"
+import (
+	"openai-api/app/bootstarp"
+)
 
 func main() {
 	bootstarp.StartServer()

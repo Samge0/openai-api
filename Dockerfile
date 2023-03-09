@@ -15,7 +15,7 @@ RUN apk --no-cache add git
 WORKDIR /app
 
 # 将当前项目所在目录代码拷贝到镜像中
-COPY . .
+COPY .. .
 
 # 下载依赖
 RUN go mod download
@@ -43,6 +43,9 @@ ADD config.dev.json /app/config.dev.json
 RUN cp config.dev.json config.json
 
 EXPOSE 8080
+
+# gin配置，可设 debug | release
+ENV GIN_MODE=release
 
 # 通过 Supervisor 管理服务
 CMD ["/usr/bin/supervisord", "-c", "/etc/supervisord.conf"]

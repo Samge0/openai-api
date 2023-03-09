@@ -14,5 +14,6 @@ func RegisterRoutes(router *gin.Engine) {
 	apiRouter := router.Group("ai").Use(middlewares.TokenJWTAuth())
 	{
 		apiRouter.POST("/chat", chatController.HandlerChat)
+		apiRouter.POST("/chat_custom", chatController.HandlerChatCustom)
 	}
 }

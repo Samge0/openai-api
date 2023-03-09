@@ -2,7 +2,7 @@ package middlewares
 
 import (
 	"github.com/gin-gonic/gin"
-	"openai-api/config"
+	"openai-api/app/config"
 	"strings"
 )
 
@@ -21,20 +21,20 @@ func TokenJWTAuth() gin.HandlerFunc {
 		token = strings.Replace(token, "Bearer ", "", -1)
 		if token != config.LoadConfig().AccessToken {
 			ResponseJson(ctx, 403, "非法访问", nil)
-			ctx.Abort()
 			return
 		}
-
 		ctx.Next()
 	}
 
 }
 
-func ResponseJson(ctx *gin.Context, code int, errorMsg string, data interface{}) {
+func ResponseJson(ctx *gin.Context, code int, msg string, data interface{}) {
 	ctx.JSON(code, gin.H{
-		"code":     code,
-		"errorMsg": errorMsg,
-		"data":     data,
+		"code": code,
+		"data": data,
+		"msg":  msg,
 	})
-	ctx.Abort()
+	if code != 200 {
+		ctx.Abort()
+	}
 }
