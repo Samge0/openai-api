@@ -118,7 +118,7 @@ func (c *ChatController) chatWithGpt35(ctx *gin.Context, cnf *config.Configurati
 		},
 	}
 
-	client := gogpt.NewClient(cnf.ApiKey)
+	client := gogpt.NewClient(utils.GetRandomApiKey())
 	resp, err := client.CreateChatCompletion(ctx, req)
 	if err != nil {
 		c.ResponseJson(ctx, http.StatusInternalServerError, err.Error(), nil)
@@ -145,7 +145,7 @@ func (c *ChatController) chatWithGpt30(ctx *gin.Context, cnf *config.Configurati
 		Prompt:           prompt,
 	}
 
-	client := gogpt.NewClient(cnf.ApiKey)
+	client := gogpt.NewClient(utils.GetRandomApiKey())
 	resp, err := client.CreateCompletion(ctx, req)
 	if err != nil {
 		c.ResponseJson(ctx, http.StatusInternalServerError, err.Error(), nil)
