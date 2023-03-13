@@ -15,7 +15,7 @@ func StartServer() {
 	portString := strconv.Itoa(port)
 	err := router.Run(":" + portString)
 	if err != nil {
-		logger.Danger("run server error %s", err)
+		logger.Danger("run server error ", err)
 		return
 	}
 }

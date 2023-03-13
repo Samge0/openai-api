@@ -17,6 +17,6 @@ func GetRandomApiKey() string {
 		randomIndex := rand.Intn(len(apiKeys))
 		apiKey = apiKeys[randomIndex]
 	}
-	logger.Info("GetRandomApiKey apiKey is %s", apiKey)
+	logger.Info("GetRandomApiKey apiKey is ", apiKey)
 	return apiKey
 }

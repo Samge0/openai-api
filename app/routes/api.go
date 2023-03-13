@@ -15,5 +15,6 @@ func RegisterRoutes(router *gin.Engine) {
 	{
 		apiRouter.POST("/chat", chatController.HandlerChat)
 		apiRouter.POST("/chat_custom", chatController.HandlerChatCustom)
+		apiRouter.POST("/chat_proxy", chatController.HandlerChatProxy)
 	}
 }
