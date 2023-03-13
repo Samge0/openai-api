@@ -2,9 +2,9 @@ package u_http
 
 import (
 	"bytes"
-	"encoding/json"
 	"errors"
 	"fmt"
+	"github.com/goccy/go-json"
 	"golang.org/x/net/context"
 	"io"
 	"net/http"
