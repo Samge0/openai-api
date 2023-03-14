@@ -21,6 +21,7 @@ func TokenJWTAuth() gin.HandlerFunc {
 		token = strings.Replace(token, "Bearer ", "", -1)
 		if token != config.LoadConfig().AccessToken {
 			ResponseJson(ctx, 403, "非法访问", nil)
+			ctx.Abort()
 			return
 		}
 		ctx.Next()
