@@ -8,12 +8,9 @@ type BaseController struct {
 }
 
 func (*BaseController) ResponseJson(ctx *gin.Context, code int, msg string, data interface{}) {
-	ctx.JSON(code, gin.H{
+	ctx.JSON(200, gin.H{
 		"code": code,
 		"data": data,
 		"msg":  msg,
 	})
-	//if code != 200 {
-	//	ctx.Abort()
-	//}
 }

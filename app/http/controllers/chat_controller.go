@@ -39,10 +39,11 @@ func (c *ChatController) HandlerChatProxy(ctx *gin.Context) {
 	resultText, err = c.chatWithGpt35Proxy(ctx, question)
 	if err != nil {
 		logger.Danger("request err is ", err)
+		c.ResponseJson(ctx, http.StatusBadRequest, err.Error(), nil)
 		return
 	}
 	logger.Info("Response resultText is ", resultText)
-	c.ResponseJson(ctx, http.StatusOK, "", resultText)
+	c.ResponseJson(ctx, http.StatusOK, "success", resultText)
 }
 
 // HandlerChatCustom 回复 - 自定义传参数
@@ -73,10 +74,11 @@ func (c *ChatController) HandlerChatCustom(ctx *gin.Context) {
 	}
 	if err != nil {
 		logger.Danger("request err is ", err)
+		c.ResponseJson(ctx, http.StatusBadRequest, err.Error(), nil)
 		return
 	}
 	logger.Info("Response resultText is ", resultText)
-	c.ResponseJson(ctx, http.StatusOK, "", resultText)
+	c.ResponseJson(ctx, http.StatusOK, "success", resultText)
 }
 
 // HandlerChat 回复
@@ -111,8 +113,9 @@ func (c *ChatController) HandlerChat(ctx *gin.Context) {
 	}
 	if err != nil {
 		logger.Danger("request err is ", err)
+		c.ResponseJson(ctx, http.StatusBadRequest, err.Error(), nil)
 		return
 	}
 	logger.Info("Response resultText is ", resultText)
-	c.ResponseJson(ctx, http.StatusOK, "", resultText)
+	c.ResponseJson(ctx, http.StatusOK, "success", resultText)
 }
