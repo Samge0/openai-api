@@ -8,6 +8,21 @@ import (
 	"openai-api/app/utils"
 )
 
+// ChatController 首页控制器
+type ChatController struct {
+	BaseController
+}
+
+// NewChatController 创建控制器
+func NewChatController() *ChatController {
+	return &ChatController{}
+}
+
+// Question 普通封装的查询体 - 只需要传一个提示字段
+type Question struct {
+	Prompt string `json:"prompt"`
+}
+
 // chatWithGpt35 chatGpt3.5模型
 func (c *ChatController) chatWithGpt35(ctx *gin.Context, cnf *config.Configuration, prompt string) (string, error) {
 	req := gogpt.ChatCompletionRequest{

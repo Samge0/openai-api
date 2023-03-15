@@ -35,7 +35,4 @@ func ResponseJson(ctx *gin.Context, code int, msg string, data interface{}) {
 		"data": data,
 		"msg":  msg,
 	})
-	//if code != 200 {
-	//	ctx.Abort()
-	//}
 }

@@ -6,6 +6,12 @@ import (
 	"net/http"
 )
 
+// QuestionCustom 自定义传参的请求体 - 自定义传openai的官方key
+type QuestionCustom struct {
+	gogpt.ChatCompletionRequest
+	ApiKey string `json:"api_key"`
+}
+
 // chatWithGpt35Custom chatGpt3.5模型 - 自定义请求参数
 func (c *ChatController) chatWithGpt35Custom(ctx *gin.Context, question *QuestionCustom) (string, error) {
 	req := gogpt.ChatCompletionRequest{

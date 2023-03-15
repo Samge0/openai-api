@@ -1,12 +1,12 @@
 package utils
 
 import (
-	"fmt"
+	"openai-api/pkg/logger"
 	"time"
 )
 
 // TimeCost 耗时统计函数
 func TimeCost(start time.Time) {
 	tc := time.Since(start)
-	fmt.Printf("time cost = %v\n", tc)
+	logger.Info("time cost = ", tc)
 }

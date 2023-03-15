@@ -8,6 +8,12 @@ import (
 	"openai-api/app/utils/u_http"
 )
 
+// QuestionProxy 自定义代理请求的接口地址 - 自定义传openai的官方key  + 自定义代理中转服务器
+type QuestionProxy struct {
+	QuestionCustom
+	ProxyUrl string `json:"proxy_url"`
+}
+
 // chatWithGpt35Proxy 获取一个聊天的回答
 func (c *ChatController) chatWithGpt35Proxy(ctx *gin.Context, question *QuestionProxy) (string, error) {
 	req := gogpt.ChatCompletionRequest{
