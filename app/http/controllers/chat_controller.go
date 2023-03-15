@@ -38,7 +38,7 @@ func (c *ChatController) HandlerChatProxy(ctx *gin.Context) {
 	var resultText string
 	resultText, err = c.chatWithGpt35Proxy(ctx, question)
 	if err != nil {
-		logger.Danger("request err is ", err)
+		logger.Danger("HandlerChatProxy request err is ", err)
 		c.ResponseJson(ctx, http.StatusBadRequest, err.Error(), nil)
 		return
 	}
@@ -73,7 +73,7 @@ func (c *ChatController) HandlerChatCustom(ctx *gin.Context) {
 		resultText, err = c.chatWithGpt30Custom(ctx, question)
 	}
 	if err != nil {
-		logger.Danger("request err is ", err)
+		logger.Danger("HandlerChatCustom request err is ", err)
 		c.ResponseJson(ctx, http.StatusBadRequest, err.Error(), nil)
 		return
 	}
@@ -112,7 +112,7 @@ func (c *ChatController) HandlerChat(ctx *gin.Context) {
 		resultText, err = c.chatWithGpt30(ctx, cnf, prompt)
 	}
 	if err != nil {
-		logger.Danger("request err is ", err)
+		logger.Danger("HandlerChat request err is ", err)
 		c.ResponseJson(ctx, http.StatusBadRequest, err.Error(), nil)
 		return
 	}
