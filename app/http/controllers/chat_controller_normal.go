@@ -42,12 +42,10 @@ func (c *ChatController) chatWithGpt35(ctx *gin.Context, cnf *config.Configurati
 	client := gogpt.NewClient(utils.GetRandomApiKey())
 	resp, err := client.CreateChatCompletion(ctx, req)
 	if err != nil {
-		c.ResponseJson(ctx, http.StatusInternalServerError, err.Error(), nil)
 		return "", err
 	}
 
 	if len(resp.Choices) == 0 {
-		c.ResponseJson(ctx, http.StatusInternalServerError, "无结果", nil)
 		return "", err
 	}
 

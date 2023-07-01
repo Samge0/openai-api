@@ -106,14 +106,14 @@ func (c *ChatController) HandlerChat(ctx *gin.Context) {
 	logger.Info("request prompt is ", prompt)
 
 	var resultText string
-	if cnf.Model == gogpt.GPT3Dot5Turbo || cnf.Model == gogpt.GPT3Dot5Turbo0301 {
+	if strings.HasPrefix(cnf.Model, "gpt-") {
 		resultText, err = c.chatWithGpt35(ctx, cnf, prompt)
 	} else {
 		resultText, err = c.chatWithGpt30(ctx, cnf, prompt)
 	}
 	if err != nil {
 		logger.Danger("HandlerChat request err is ", err)
-		c.ResponseJson(ctx, http.StatusBadRequest, err.Error(), nil)
+		c.ResponseJson(ctx, http.StatusInternalServerError, err.Error(), nil)
 		return
 	}
 	logger.Info("Response resultText is ", resultText)
