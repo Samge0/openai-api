@@ -2,7 +2,6 @@ package controllers
 
 import (
 	"github.com/gin-gonic/gin"
-	gogpt "github.com/sashabaranov/go-gpt3"
 	"net/http"
 	"openai-api/app/config"
 	"openai-api/app/utils"
@@ -67,14 +66,14 @@ func (c *ChatController) HandlerChatCustom(ctx *gin.Context) {
 	logger.Info("request prompt is ", question.Messages[0].Content)
 
 	var resultText string
-	if question.Model == gogpt.GPT3Dot5Turbo || question.Model == gogpt.GPT3Dot5Turbo0301 {
+	if strings.HasPrefix(question.Model, "gpt-") {
 		resultText, err = c.chatWithGpt35Custom(ctx, question)
 	} else {
 		resultText, err = c.chatWithGpt30Custom(ctx, question)
 	}
 	if err != nil {
 		logger.Danger("HandlerChatCustom request err is ", err)
-		c.ResponseJson(ctx, http.StatusBadRequest, err.Error(), nil)
+		c.ResponseJson(ctx, http.StatusInternalServerError, err.Error(), nil)
 		return
 	}
 	logger.Info("Response resultText is ", resultText)
