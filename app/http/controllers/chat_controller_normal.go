@@ -4,7 +4,6 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/otiai10/openaigo"
 	gogpt "github.com/sashabaranov/go-gpt3"
-	"net/http"
 	"openai-api/app/config"
 	"openai-api/app/utils"
 )
@@ -68,12 +67,10 @@ func (c *ChatController) chatWithGpt30(ctx *gin.Context, cnf *config.Configurati
 	client := gogpt.NewClient(utils.GetRandomApiKey())
 	resp, err := client.CreateCompletion(ctx, req)
 	if err != nil {
-		c.ResponseJson(ctx, http.StatusInternalServerError, err.Error(), nil)
 		return "", err
 	}
 
 	if len(resp.Choices) == 0 {
-		c.ResponseJson(ctx, http.StatusInternalServerError, "无结果", nil)
 		return "", err
 	}
 
