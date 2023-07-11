@@ -3,6 +3,7 @@ package controllers
 import (
 	"encoding/json"
 	"github.com/gin-gonic/gin"
+	"github.com/otiai10/openaigo"
 	gogpt "github.com/sashabaranov/go-gpt3"
 	"net/http"
 	"openai-api/app/utils/u_http"
@@ -16,7 +17,7 @@ type QuestionProxy struct {
 
 // chatWithGpt35Proxy 获取一个聊天的回答
 func (c *ChatController) chatWithGpt35Proxy(ctx *gin.Context, question *QuestionProxy) (string, error) {
-	req := gogpt.ChatCompletionRequest{
+	req := openaigo.ChatRequest{
 		Model:            question.Model,
 		MaxTokens:        question.MaxTokens,
 		TopP:             question.TopP,
