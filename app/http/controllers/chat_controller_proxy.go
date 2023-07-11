@@ -5,7 +5,6 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/otiai10/openaigo"
 	gogpt "github.com/sashabaranov/go-gpt3"
-	"net/http"
 	"openai-api/app/utils/u_http"
 )
 
@@ -30,7 +29,6 @@ func (c *ChatController) chatWithGpt35Proxy(ctx *gin.Context, question *Question
 	}
 	body, err := u_http.Post(question.ProxyUrl, headers, req)
 	if err != nil {
-		c.ResponseJson(ctx, http.StatusInternalServerError, err.Error(), nil)
 		return "", err
 	}
 
@@ -38,12 +36,10 @@ func (c *ChatController) chatWithGpt35Proxy(ctx *gin.Context, question *Question
 	err = json.Unmarshal(*body, &resp)
 
 	if err != nil {
-		c.ResponseJson(ctx, http.StatusInternalServerError, err.Error(), nil)
 		return "", err
 	}
 
 	if len(resp.Choices) == 0 {
-		c.ResponseJson(ctx, http.StatusInternalServerError, "无结果", nil)
 		return "", err
 	}
 
