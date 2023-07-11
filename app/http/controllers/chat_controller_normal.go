@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/otiai10/openaigo"
 	gogpt "github.com/sashabaranov/go-gpt3"
 	"net/http"
 	"openai-api/app/config"
@@ -25,22 +26,22 @@ type Question struct {
 
 // chatWithGpt35 chatGpt3.5模型
 func (c *ChatController) chatWithGpt35(ctx *gin.Context, cnf *config.Configuration, prompt string) (string, error) {
-	req := gogpt.ChatCompletionRequest{
+
+	client := openaigo.NewClient(utils.GetRandomApiKey())
+	req := openaigo.ChatRequest{
 		Model:            cnf.Model,
 		MaxTokens:        cnf.MaxTokens,
 		TopP:             cnf.TopP,
 		FrequencyPenalty: cnf.FrequencyPenalty,
 		PresencePenalty:  cnf.PresencePenalty,
-		Messages: []gogpt.ChatCompletionMessage{
+		Messages: []openaigo.Message{
 			{
 				Role:    "user",
 				Content: prompt,
 			},
 		},
 	}
-
-	client := gogpt.NewClient(utils.GetRandomApiKey())
-	resp, err := client.CreateChatCompletion(ctx, req)
+	resp, err := client.Chat(ctx, req)
 	if err != nil {
 		return "", err
 	}
